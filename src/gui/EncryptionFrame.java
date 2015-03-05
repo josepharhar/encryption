@@ -16,6 +16,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import static encryption.Encryptor.*;
+
 public class EncryptionFrame extends JFrame implements ActionListener {
 	
     private JTextField shiftFactor;
@@ -65,50 +67,24 @@ public class EncryptionFrame extends JFrame implements ActionListener {
        
         pack();
 	}
-	
-	private void encryptText() {
-		String inputText = this.inputTA.getText();
-		
-		char[] charArray = inputText.toCharArray();
-		
-		long shift = 0;
-		
-		if (!shiftFactor.getText().equals("")) {
-			shift = Integer.parseInt(shiftFactor.getText());
-		}
-		
-		for (int i = 0; i < charArray.length; i++) {
-			shift %= 128;
-			charArray[i] += shift;
-		}
-		
-		outputTA.setText(new String(charArray));
-	}
-	
-	private void decryptText() {
-		String inputText = this.inputTA.getText();
-		
-		char[] charArray = inputText.toCharArray();
-		
-		long shift = 0;
-		
-		if (!shiftFactor.getText().equals("")) {
-			shift = Integer.parseInt(shiftFactor.getText());
-		}
-		
-		for (int i = 0; i < charArray.length; i++) {
-			shift %= 128;
-			charArray[i] -= shift;
-		}
-		
-		outputTA.setText(new String(charArray));
-	}
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Encrypt")) {
-			encryptText();
+		    String inputText = inputTA.getText();
+		    long shift = 0;
+		    if (!shiftFactor.getText().equals("")) {
+		        shift = Integer.parseInt(shiftFactor.getText());
+		    }
+		    
+		    outputTA.setText(encrypt(inputText, shift));
 		} else if (e.getActionCommand().equals("Decrypt")) {
-			decryptText();
+            String inputText = inputTA.getText();
+            long shift = 0;
+            if (!shiftFactor.getText().equals("")) {
+                shift = Integer.parseInt(shiftFactor.getText());
+            }
+            
+            outputTA.setText(decrypt(inputText, shift));
 		}
 	}
 
